@@ -158,7 +158,7 @@ class PgAnonymizer extends Command {
 
     for await (let line of inputLineResults) {
       if (line.match(/^COPY .* FROM stdin;$/)) {
-        table = line.replace(/^COPY (.*?) .*$/, "$1");
+        table = line.replace(/^COPY (.*?) .*$/, "$1").replace(/"/g, '').toLowerCase();
         console.error("Anonymizing table " + table);
 
         cols = line
@@ -178,7 +178,7 @@ class PgAnonymizer extends Command {
         if (indices.length)
           console.error(
             "Columns to anonymize: " +
-              cols.filter((v, k) => indices.includes(k)).join(", ")
+            cols.filter((v, k) => indices.includes(k)).join(", ")
           );
         else console.error("No columns to anonymize");
       } else if (table && line.trim() && (line !== "\\.")) {
