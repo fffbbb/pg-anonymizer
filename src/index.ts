@@ -185,7 +185,8 @@ class PgAnonymizer extends Command {
         line = line
           .split("\t")
           .map((v, k) => {
-            if (indices.includes(k)) {
+
+            if (indices.includes(k) && (v != '\\N' && v != '')) {
               let replacement = list.find(
                 (l: any) => l.col === cols[k]
               )?.replacement;
